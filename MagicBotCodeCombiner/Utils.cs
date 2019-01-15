@@ -21,7 +21,7 @@ namespace MagicBotCodeCombiner
             return result;
         }
 
-        public static string GetFileList(string baseDirectory)
+        public static string GetFileList(string baseDirectory, List<string> ignoreList)
         {
             var result = string.Empty;
             var sourceFileList = FindAllCsFiles(baseDirectory);
@@ -30,7 +30,21 @@ namespace MagicBotCodeCombiner
             {
                 var fileName = sourceFileList[i].Substring(baseDirectory.Length,
                     sourceFileList[i].Length - baseDirectory.Length);
-                result = result + fileName + Environment.NewLine;
+
+                var ignoreFile = false;
+                foreach (var fileToIgnore in ignoreList)
+                {
+                    if (fileName.Contains(fileToIgnore))
+                    {
+                        ignoreFile = true;
+                        break;
+                    }
+                }
+
+                if (!ignoreFile)
+                {
+                    result = result + fileName + Environment.NewLine;
+                }
             }
 
             return result.Trim();

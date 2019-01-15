@@ -5,22 +5,21 @@ namespace MagicBotCodeCombiner
 {
     public partial class CombinerForm : Form
     {
-        private const string BotAssemblyName = "MagicBotCodeCombiner";
-        public const bool SPEEDTHINGSUPBOY = false; // just copy files contents to clipboard
+        // CHECK DefaultValues.cs
 
         public CombinerForm()
         {
-            if (!SPEEDTHINGSUPBOY)
+            if (!DefaultValues.SPEEDTHINGSUPBOY)
             {
                 InitializeComponent();
-                txtBaseDirectory.Text = Utils.GetBaseDirectory(BotAssemblyName);
+                txtBaseDirectory.Text = Utils.GetBaseDirectory(DefaultValues.BotAssemblyName);
                 FillFileList();
                 FillFileCode();
             }
             else
             {
-                var baseDirectory = Utils.GetBaseDirectory(BotAssemblyName);
-                var fileList = Utils.GetFileList(baseDirectory);
+                var baseDirectory = Utils.GetBaseDirectory(DefaultValues.BotAssemblyName);
+                var fileList = Utils.GetFileList(baseDirectory, DefaultValues.IgnoreFileList);
                 var fileContents = Utils.GetCombinedFileText(baseDirectory, fileList);
                 Clipboard.SetText(fileContents.Item1 + fileContents.Item2);
                 System.Environment.Exit(0);
@@ -51,7 +50,7 @@ namespace MagicBotCodeCombiner
 
         private void FillFileList()
         {
-            txtFileList.Text = Utils.GetFileList(txtBaseDirectory.Text);
+            txtFileList.Text = Utils.GetFileList(txtBaseDirectory.Text, DefaultValues.IgnoreFileList);
         }
     }
 }
