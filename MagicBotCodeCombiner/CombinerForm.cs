@@ -28,10 +28,11 @@ namespace MagicBotCodeCombiner
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            FillFileCode();
+            var code = FillFileCode();
+            CodeingameIdeSync.SendCodeToIde(code);
         }
 
-        private void FillFileCode()
+        private string FillFileCode()
         {
             txtUsings.Clear();
             txtCode.Clear();
@@ -40,7 +41,10 @@ namespace MagicBotCodeCombiner
             txtUsings.Text = fileContents.Item1;
             txtCode.Text = fileContents.Item2;
 
-            Clipboard.SetText(fileContents.Item1 + fileContents.Item2);
+            var fullCode = fileContents.Item1 + fileContents.Item2;
+
+            Clipboard.SetText(fullCode);
+            return fullCode;
         }
 
         private void btnGetFileList_Click(object sender, EventArgs e)

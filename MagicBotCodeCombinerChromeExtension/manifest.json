@@ -1,0 +1,15 @@
+{
+    "name": "MagicBotCodeCombinerChromeExtension",
+    "version": "1.0",
+    "description": "This extensions is designed to listen MagicBotCombiner commands, and interact Legend Of Code And Magic",
+	"permissions": ["declarativeContent", "storage"],
+	"background": {
+      "scripts": ["startup.js"],
+      "persistent": false
+    },
+	"content_scripts": [ {
+      "js": [ "lib/jquery-1.8.2.min.js", "combinerListener.js"],
+      "matches": [ "http://*.codingame.com/*", "https://*.codingame.com/*" ]
+    } ],
+    "manifest_version": 2
+  }
