@@ -6,13 +6,21 @@ var hitPlayInIDE = function() {
 	window.document.dispatchEvent(new CustomEvent('ExternalEditorToIDE', {
       'detail': {'status': 'play'}
     }));
-}
+};
 
-var updateCodeInIDE = function(code) {
+var hitPlaySameConditionsInIDE = function() {
+	$('button.replay').click();
+};
+
+var hitSubmitInIDE = function() {
+	$('button.submit').click();
+};
+
+var updateCodeInIDE = function(code, callback) {
 	window.document.dispatchEvent(new CustomEvent('ExternalEditorToIDE', {
       'detail': {'status': 'updateCode', 'code': code.replace(/\r\n/g, '\n').replace(/\r/g, '\n')}
     }));
-	setTimeout(hitPlayInIDE, 1000)
+	setTimeout(callback, 1000)
 };
 
 var launchListener =  function(){
@@ -25,7 +33,21 @@ var launchListener =  function(){
 		};
 
 		$.post( listener, postData, function(response){
-			updateCodeInIDE(response);
+			if (response.Command == 0) {
+				updateCodeInIDE(response.Code, null);
+			} 
+			else
+			if (response.Command == 1) {
+				updateCodeInIDE(response.Code, hitPlayInIDE);
+			}
+			else
+			if (response.Command == 2) {
+				updateCodeInIDE(response.Code, hitPlaySameConditionsInIDE);
+			}
+			else
+			if (response.Command == 3) {
+				updateCodeInIDE(response.Code, hitSubmitInIDE);
+			}
 		});
 	}
 

@@ -26,12 +26,6 @@ namespace MagicBotCodeCombiner
             }
         }
 
-        private void btnGenerate_Click(object sender, EventArgs e)
-        {
-            var code = FillFileCode();
-            CodeingameIdeSync.SendCodeToIde(code);
-        }
-
         private string FillFileCode()
         {
             txtUsings.Clear();
@@ -43,7 +37,6 @@ namespace MagicBotCodeCombiner
 
             var fullCode = fileContents.Item1 + fileContents.Item2;
 
-            Clipboard.SetText(fullCode);
             return fullCode;
         }
 
@@ -55,6 +48,36 @@ namespace MagicBotCodeCombiner
         private void FillFileList()
         {
             txtFileList.Text = Utils.GetFileList(txtBaseDirectory.Text, DefaultValues.IgnoreFileList);
+        }
+
+        private void btnClipboard_Click(object sender, EventArgs e)
+        {
+            var code = FillFileCode();
+            Clipboard.SetText(code);
+        }
+
+        private void btnCodeToIde_Click(object sender, EventArgs e)
+        {
+            var code = FillFileCode();
+            CodeingameIdeSync.SendCommandToIde(CodingameIdeSyncCommandType.Code, code);
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+            var code = FillFileCode();
+            CodeingameIdeSync.SendCommandToIde(CodingameIdeSyncCommandType.Play, code);
+        }
+
+        private void btnPlaySameConditions_Click(object sender, EventArgs e)
+        {
+            var code = FillFileCode();
+            CodeingameIdeSync.SendCommandToIde(CodingameIdeSyncCommandType.PlaySameConditions, code);
+        }
+
+        private void btnSubmitInIde_Click(object sender, EventArgs e)
+        {
+            var code = FillFileCode();
+            CodeingameIdeSync.SendCommandToIde(CodingameIdeSyncCommandType.Submit, code);
         }
     }
 }
